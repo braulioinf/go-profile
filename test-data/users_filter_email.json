@@ -1,0 +1,29 @@
+{
+  "data":[
+     {
+        "type":"user",
+        "id":8,
+        "attributes":{
+           "id":8,
+           "birthdate":null,
+           "photo":"https://scontent.xx.fbcdn.net/v/t1.0-1/p50x50/16473321_10202878660923274_6234394724337453287_n.jpg?oh=c7e099c7723e087186204af18d33fff2&oe=59764472",
+           "location":null,
+           "phone":null,
+           "status":"active",
+           "greeting":null,
+           "realm":"ADMIN",
+           "username":"Uriel Marquez",
+           "password":"$2a$10$59lcBj3m84rHcpsnNCl4ZeqiTBLybyrfF7Prfu7pU2vNLgNOp./d2",
+           "email":"u.marquez.j@gmail.com",
+           "emailVerified":1,
+           "verificationToken":null,
+           "position":null,
+           "description":null,
+           "twitter":null,
+           "facebook":null,
+           "slug":"uriel-marquez-jaramillo",
+           "type":"post"
+        }
+     }
+  ]
+}
