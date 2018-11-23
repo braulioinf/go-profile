@@ -15,26 +15,24 @@ func makePetition(ops Options) (interface{}, error) {
 	}
 
 	// Can move on build options
-	if len(ops.id) > 0 {
-		ops.endpoint = ops.endpoint + ops.id
+	if len(ops.ID) > 0 {
+		ops.Endpoint = ops.Endpoint + ops.ID
 	}
 
-	req, err := http.NewRequest(ops.method, ops.endpoint, bytes.NewBuffer(ops.body))
+	req, err := http.NewRequest(ops.Method, ops.Endpoint, bytes.NewBuffer(ops.Body))
 	if err != nil {
 		return nil, err
 	}
 
-	if len(ops.token) > 0 {
-		req.Header.Add("Authorization", ops.token)
+	if len(ops.Token) > 0 {
+		req.Header.Add("Authorization", ops.Token)
 	}
 
 	// Find by queryString
-	if ops.params != nil {
+	if len(ops.Params) > 0 {
 		q := req.URL.Query()
-		for _, value := range ops.params {
-			for i, v := range value {
-				q.Add(i, v)
-			}
+		for _, value := range ops.Params {
+			q.Add(value.field, value.content)
 		}
 		req.URL.RawQuery = q.Encode()
 	}

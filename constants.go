@@ -1,7 +1,6 @@
 package profile
 
 const (
-	baseURL                    = "http://localhost:3000/"
-	endpointOriginProfile      = "origin-profiles/"
-	endpointDestinationProfile = "destination-profiles/"
+	endpointUserAPI    = "http://localhost:3000"
+	endpointProfileAPI = "https://dev.api.culturacolectiva.com/profiles"
 )

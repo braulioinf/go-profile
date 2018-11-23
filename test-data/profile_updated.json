@@ -1,18 +1,11 @@
 {
   "type": "profiles",
-  "id": "pT4THGoc8ocF62XuXW6SKKMSzuf2",
+  "id": "g0CX4kvuTxOuMGiYsrHyLt2cJzm2",
   "attributes": {
-      "name": "Braulio",
-      "alias": "saimondev",
-      "lastname": "Aguilar Simon",
-      "email": "braulio.aguilar@culturacolectiva.com",
-      "birthday": "1985-08-29",
+      "name": "Abril Romero",
+      "email": "abygromero@gmail.com",
       "status": "STATUS_ACTIVE",
-      "role": "ROLE_ADMIN",
-      "picture": "https://graph.facebook.com/110470069939572/picture",
-      "position": "develop",
-      "description": "developer",
-      "facebook": "brauio45678",
-      "twitter": "saimondev"
+      "role": "ROLE_EDITOR",
+      "picture": "https://graph.facebook.com/2385936324753423/picture"
   }
 }
