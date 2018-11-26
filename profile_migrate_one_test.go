@@ -156,7 +156,6 @@ func TestMigrateProfileEmail(t *testing.T) {
 		}
 
 		profileUpdated, err := makePetition(patchOps)
-		// fmt.Println(profileUpdated)
 		if err != nil {
 			t.Error(err)
 		}
