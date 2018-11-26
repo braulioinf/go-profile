@@ -18,7 +18,7 @@ type Metadata struct {
 type Options struct {
 	Endpoint string  `json:"endpoint"`
 	Body     []byte  `json:"body"`
-	Params   []Param `json:"params"` //slice
+	Params   []Param `json:"params"`
 	ID       string  `json:"id"`
 	Token    string  `json:"token"`
 	Method   string  `json:"method"`
