@@ -1,0 +1,17 @@
+{
+  "type": "profiles",
+  "id": "agP05IrUR3hwwSvTIiqzqe3gD1Q2",
+  "attributes": {
+      "name": "Patricia Cordero",
+      "email": "patricia.cordero@culturacolectiva.com",
+      "status": "STATUS_ACTIVE",
+      "role": "ROLE_EDITOR",
+      "picture": "https://graph.facebook.com/191136495131056/picture",
+      "username": "Patricia Cordero",
+      "slug": "patricia-cordero",
+      "description": "Journalist. Museumgeek. Art connoisseur.",
+      "twitter": "https://www.twitter.com/lacordero",
+      "position": "Editorial coordinator CC+",
+      "facebook": ""
+  }
+}
