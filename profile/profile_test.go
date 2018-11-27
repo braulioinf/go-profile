@@ -18,12 +18,12 @@ func TestGetProfileSecondPage(t *testing.T) {
 
 	// Prepare filter
 	profileAttrs := make([]Param, 0)
-	profileAttrs = append(profileAttrs, Param{field: "page", content: "2"})
-	profileAttrs = append(profileAttrs, Param{field: "limit", content: "10"})
-	profileAttrs = append(profileAttrs, Param{field: "sortBy", content: "DESC"})
+	profileAttrs = append(profileAttrs, Param{Field: "page", Content: "2"})
+	profileAttrs = append(profileAttrs, Param{Field: "limit", Content: "10"})
+	profileAttrs = append(profileAttrs, Param{Field: "sortBy", Content: "DESC"})
 
 	ops := Options{
-		Endpoint: endpointProfileAPI,
+		Endpoint: EndpointProfileAPI,
 		Params:   profileAttrs,
 		Token:    *tokenFlag,
 	}
@@ -34,7 +34,7 @@ func TestGetProfileSecondPage(t *testing.T) {
 		t.Error(err)
 	}
 
-	data, err := readFile("test-data/profiles_second_page_limit_10.json")
+	data, err := ReadFile("test-data/profiles_second_page_limit_10.json")
 
 	if err != nil {
 		t.Error(err)
@@ -58,13 +58,13 @@ func TestGetProfileSecondPage(t *testing.T) {
 func TestFindProfileByEmail(t *testing.T) {
 	// Prepare filter
 	profileAttrs := make([]Param, 0)
-	profileAttrs = append(profileAttrs, Param{field: "filter.email", content: "elizabeth.flores@culturacolectiva.com"})
-	profileAttrs = append(profileAttrs, Param{field: "page", content: "1"})
-	profileAttrs = append(profileAttrs, Param{field: "limit", content: "1"})
-	profileAttrs = append(profileAttrs, Param{field: "sortBy", content: "DESC"})
+	profileAttrs = append(profileAttrs, Param{Field: "filter.email", Content: "elizabeth.flores@culturacolectiva.com"})
+	profileAttrs = append(profileAttrs, Param{Field: "page", Content: "1"})
+	profileAttrs = append(profileAttrs, Param{Field: "limit", Content: "1"})
+	profileAttrs = append(profileAttrs, Param{Field: "sortBy", Content: "DESC"})
 
 	ops := Options{
-		Endpoint: endpointProfileAPI,
+		Endpoint: EndpointProfileAPI,
 		Params:   profileAttrs,
 		Token:    *tokenFlag,
 		Method:   "GET",
@@ -76,7 +76,7 @@ func TestFindProfileByEmail(t *testing.T) {
 		t.Error(err)
 	}
 
-	data, err := readFile("test-data/profiles_filter_email.json")
+	data, err := ReadFile("test-data/profiles_filter_email.json")
 
 	if err != nil {
 		t.Error(err)

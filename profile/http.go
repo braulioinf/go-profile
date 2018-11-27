@@ -32,7 +32,7 @@ func makePetition(ops Options) (interface{}, error) {
 	if len(ops.Params) > 0 {
 		q := req.URL.Query()
 		for _, value := range ops.Params {
-			q.Add(value.field, value.content)
+			q.Add(value.Field, value.Content)
 		}
 		req.URL.RawQuery = q.Encode()
 	}

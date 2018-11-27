@@ -10,8 +10,6 @@ import (
 	"github.com/mitchellh/mapstructure"
 )
 
-// $ go run *.go  --user-{slug,email}  dev@demo.com --profile-{email} = dev.culturacolectiva.com
-
 var (
 	userEmail    string
 	profileEmail string
@@ -26,10 +24,10 @@ func TestMigrateProfileEmail(t *testing.T) {
 
 		// Prepare attributes to search
 		userParams := make([]Param, 0)
-		userParams = append(userParams, Param{field: "email", content: emailTest})
+		userParams = append(userParams, Param{Field: "email", Content: emailTest})
 
 		userOps := Options{
-			Endpoint: endpointUserAPI + "/users",
+			Endpoint: EndpointUserAPI + "/users",
 			Params:   userParams,
 			Method:   "GET",
 		}
@@ -55,13 +53,13 @@ func TestMigrateProfileEmail(t *testing.T) {
 		emailTest = "patricia.cordero@culturacolectiva.com"
 
 		profileAttrs := make([]Param, 0)
-		profileAttrs = append(profileAttrs, Param{field: "filter.email", content: emailTest})
-		profileAttrs = append(profileAttrs, Param{field: "page", content: "1"})
-		profileAttrs = append(profileAttrs, Param{field: "limit", content: "1"})
-		profileAttrs = append(profileAttrs, Param{field: "sortBy", content: "DESC"})
+		profileAttrs = append(profileAttrs, Param{Field: "filter.email", Content: emailTest})
+		profileAttrs = append(profileAttrs, Param{Field: "page", Content: "1"})
+		profileAttrs = append(profileAttrs, Param{Field: "limit", Content: "1"})
+		profileAttrs = append(profileAttrs, Param{Field: "sortBy", Content: "DESC"})
 
 		profileOps := Options{
-			Endpoint: endpointProfileAPI,
+			Endpoint: EndpointProfileAPI,
 			Params:   profileAttrs,
 			Method:   "GET",
 			Token:    *tokenFlag,
@@ -87,10 +85,10 @@ func TestMigrateProfileEmail(t *testing.T) {
 
 		// Prepare to search User
 		userAttrs := make([]Param, 0)
-		userAttrs = append(userAttrs, Param{field: "email", content: emailTest})
+		userAttrs = append(userAttrs, Param{Field: "email", Content: emailTest})
 
 		userOps := Options{
-			Endpoint: endpointUserAPI + "/users",
+			Endpoint: EndpointUserAPI + "/users",
 			Params:   userAttrs,
 			Method:   "GET",
 		}
@@ -102,13 +100,13 @@ func TestMigrateProfileEmail(t *testing.T) {
 
 		// Prepare to search Profile
 		profileAttrs := make([]Param, 0)
-		profileAttrs = append(profileAttrs, Param{field: "filter.email", content: emailTest})
-		profileAttrs = append(profileAttrs, Param{field: "page", content: "1"})
-		profileAttrs = append(profileAttrs, Param{field: "limit", content: "1"})
-		profileAttrs = append(profileAttrs, Param{field: "sortBy", content: "DESC"})
+		profileAttrs = append(profileAttrs, Param{Field: "filter.email", Content: emailTest})
+		profileAttrs = append(profileAttrs, Param{Field: "page", Content: "1"})
+		profileAttrs = append(profileAttrs, Param{Field: "limit", Content: "1"})
+		profileAttrs = append(profileAttrs, Param{Field: "sortBy", Content: "DESC"})
 
 		profileOps := Options{
-			Endpoint: endpointProfileAPI,
+			Endpoint: EndpointProfileAPI,
 			Params:   profileAttrs,
 			Method:   "GET",
 			Token:    *tokenFlag,
@@ -120,7 +118,7 @@ func TestMigrateProfileEmail(t *testing.T) {
 		}
 
 		if len(userData.Data) == 0 || len(profileData.Data) == 0 {
-			t.Error(err)
+			t.Error("User or Profile is empty")
 		}
 
 		// Available fields to set
@@ -129,7 +127,7 @@ func TestMigrateProfileEmail(t *testing.T) {
 
 		patchAttrs := make(map[string]interface{})
 		for field, content := range responseAttrs {
-			if contains(available, field) {
+			if Contains(available, field) {
 				patchAttrs[strings.ToLower(field)] = content
 			}
 		}
@@ -149,7 +147,7 @@ func TestMigrateProfileEmail(t *testing.T) {
 		}
 
 		patchOps := Options{
-			Endpoint: endpointProfileAPI + "/" + profileID,
+			Endpoint: EndpointProfileAPI + "/" + profileID,
 			Token:    *tokenFlag,
 			Method:   "PATCH",
 			Body:     bodyProfile,
@@ -167,7 +165,7 @@ func TestMigrateProfileEmail(t *testing.T) {
 		}
 
 		// Read local json
-		profileFromJSON, err := readFile("test-data/profile_migrated_one.json")
+		profileFromJSON, err := ReadFile("test-data/profile_migrated_one.json")
 		if err != nil {
 			t.Error(err)
 		}

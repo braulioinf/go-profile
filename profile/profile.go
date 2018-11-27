@@ -37,3 +37,14 @@ func GetProfiles(o Options) (*Profile, error) {
 
 	return destinations, nil
 }
+
+// SetProfile func
+func SetProfile(o Options) (interface{}, error) {
+	data, err := makePetition(o)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return data, nil
+}

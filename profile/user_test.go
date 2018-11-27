@@ -10,7 +10,7 @@ import (
 // TestGestUsers --- Users
 func TestGestUsers(t *testing.T) {
 	ops := Options{
-		Endpoint: endpointUserAPI + "/users",
+		Endpoint: EndpointUserAPI + "/users",
 		Method:   "GET",
 	}
 
@@ -20,7 +20,7 @@ func TestGestUsers(t *testing.T) {
 		t.Error(err)
 	}
 
-	data, err := readFile("test-data/users.json")
+	data, err := ReadFile("test-data/users.json")
 
 	if err != nil {
 		t.Error(err)
@@ -42,10 +42,10 @@ func TestGestUsers(t *testing.T) {
 
 func TestFindUserByEmail(t *testing.T) {
 	attrs := make([]Param, 0)
-	attrs = append(attrs, Param{field: "email", content: "abygromero@gmail.com"})
+	attrs = append(attrs, Param{Field: "email", Content: "abygromero@gmail.com"})
 
 	ops := Options{
-		Endpoint: endpointUserAPI + "/users",
+		Endpoint: EndpointUserAPI + "/users",
 		Params:   attrs,
 		Method:   "GET",
 	}
@@ -56,7 +56,7 @@ func TestFindUserByEmail(t *testing.T) {
 		t.Error(err)
 	}
 
-	data, err := readFile("test-data/users_filter_email.json")
+	data, err := ReadFile("test-data/users_filter_email.json")
 
 	if err != nil {
 		t.Error(err)

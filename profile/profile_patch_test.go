@@ -14,13 +14,13 @@ var tokenFlag = flag.String("token", "", "Token needed for make the petition")
 func TestPatchProfile(t *testing.T) {
 
 	profileAttrs := make([]Param, 0)
-	profileAttrs = append(profileAttrs, Param{field: "filter.email", content: "abygromero@gmail.com"})
-	profileAttrs = append(profileAttrs, Param{field: "page", content: "1"})
-	profileAttrs = append(profileAttrs, Param{field: "limit", content: "1"})
-	profileAttrs = append(profileAttrs, Param{field: "sortBy", content: "DESC"})
+	profileAttrs = append(profileAttrs, Param{Field: "filter.email", Content: "abygromero@gmail.com"})
+	profileAttrs = append(profileAttrs, Param{Field: "page", Content: "1"})
+	profileAttrs = append(profileAttrs, Param{Field: "limit", Content: "1"})
+	profileAttrs = append(profileAttrs, Param{Field: "sortBy", Content: "DESC"})
 
 	getOps := Options{
-		Endpoint: endpointProfileAPI,
+		Endpoint: EndpointProfileAPI,
 		Params:   profileAttrs,
 		Method:   "GET",
 		Token:    *tokenFlag,
@@ -50,7 +50,7 @@ func TestPatchProfile(t *testing.T) {
 
 	profileID := response.Data[0].ID
 	postOps := Options{
-		Endpoint: endpointProfileAPI + "/" + profileID,
+		Endpoint: EndpointProfileAPI + "/" + profileID,
 		Token:    *tokenFlag,
 		Method:   "PATCH",
 		Body:     bodyProfile,
@@ -68,7 +68,7 @@ func TestPatchProfile(t *testing.T) {
 		t.Error(err)
 	}
 
-	profileFromJSON, err := readFile("test-data/profile_updated.json")
+	profileFromJSON, err := ReadFile("test-data/profile_updated.json")
 
 	profileJSONData := new(ProfileData)
 

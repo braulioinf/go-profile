@@ -5,7 +5,8 @@ import (
 	"os"
 )
 
-func readFile(path string) ([]byte, error) {
+// ReadFile func
+func ReadFile(path string) ([]byte, error) {
 	jsonFile, err := os.Open(path)
 	if err != nil {
 		return nil, err
@@ -20,21 +21,8 @@ func readFile(path string) ([]byte, error) {
 	return data, nil
 }
 
-func buildArrayMaps(params map[string]string) ([]map[string]string, error) {
-	var attrs [](map[string]string)
-	for key, v := range params {
-		j := map[string]string{
-			key: v,
-		}
-
-		attrs = append(attrs, j)
-	}
-
-	return attrs, nil
-}
-
-// Search in slice
-func contains(slice []string, item string) bool {
+// Contains in slice
+func Contains(slice []string, item string) bool {
 	set := make(map[string]struct{}, len(slice))
 	for _, s := range slice {
 		set[s] = struct{}{}

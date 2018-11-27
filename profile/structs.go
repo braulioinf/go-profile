@@ -26,7 +26,8 @@ type Options struct {
 
 // Param struct
 type Param struct {
-	field, content string
+	Field   string `json:"field"`
+	Content string `json:"content"`
 }
 
 // BodyAttributes struct
