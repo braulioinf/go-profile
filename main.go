@@ -22,10 +22,10 @@ const (
 )
 
 var (
-	emailUserFlag    *string
-	emailProfileFlag *string
+	userEmailFlag    *string
+	profileEmailFlag *string
 	tokenFlag        *string
-	envFlag          *string
+	environmentFlag  *string
 	dataUserFlag     *string
 	api              string
 	green            = color.New(color.FgGreen).SprintFunc()
@@ -33,10 +33,10 @@ var (
 )
 
 func main() {
-	emailUserFlag = flag.String("email-user", "", "Email user to get source info")
-	emailProfileFlag = flag.String("email-profile", "", "Email profile to push info")
+	userEmailFlag = flag.String("user-email", "", "Email user to get source info")
+	profileEmailFlag = flag.String("profile-email", "", "Email profile to push info")
 	tokenFlag = flag.String("token", "", "Token needed to make the petition")
-	envFlag = flag.String("env", "dev", "Environment to make metition {dev, staging, prod}")
+	environmentFlag = flag.String("environment", "dev", "Environment to make metition {dev, staging, prod}")
 	dataUserFlag = flag.String("data-users", "http://localhost:3000", "URL for get users")
 
 	envs := map[string]string{
@@ -47,7 +47,7 @@ func main() {
 
 	flag.Parse()
 
-	api = envs[*envFlag]
+	api = envs[*environmentFlag]
 
 	if api != "" {
 		migrateProfile()
@@ -62,7 +62,7 @@ func migrateProfile() {
 	fmt.Printf("Working user in %s\n", green(*dataUserFlag))
 
 	userAttrs := make([]profile.Param, 0)
-	userAttrs = append(userAttrs, profile.Param{Field: "email", Content: *emailUserFlag})
+	userAttrs = append(userAttrs, profile.Param{Field: "email", Content: *userEmailFlag})
 
 	userOps := profile.Options{
 		Endpoint: *dataUserFlag + "/users",
@@ -70,7 +70,7 @@ func migrateProfile() {
 		Method:   "GET",
 	}
 
-	fmt.Printf("Searching in user: %s\n", green(*emailUserFlag))
+	fmt.Printf("Searching in user: %s\n", green(*userEmailFlag))
 	userData, err := profile.GetUsers(userOps)
 	if err != nil {
 		log.Println(red(err))
@@ -78,7 +78,7 @@ func migrateProfile() {
 
 	// Prepare to search Profile
 	profileAttrs := make([]profile.Param, 0)
-	profileAttrs = append(profileAttrs, profile.Param{Field: "filter.email", Content: *emailProfileFlag})
+	profileAttrs = append(profileAttrs, profile.Param{Field: "filter.email", Content: *profileEmailFlag})
 	profileAttrs = append(profileAttrs, profile.Param{Field: "page", Content: "1"})
 	profileAttrs = append(profileAttrs, profile.Param{Field: "limit", Content: "1"})
 	profileAttrs = append(profileAttrs, profile.Param{Field: "sortBy", Content: "DESC"})
@@ -90,7 +90,7 @@ func migrateProfile() {
 		Token:    *tokenFlag,
 	}
 
-	fmt.Printf("Searching in profile: %s\n", green(*emailProfileFlag))
+	fmt.Printf("Searching in profile: %s\n", green(*profileEmailFlag))
 	profileData, err := profile.GetProfiles(profileOps)
 	if err != nil {
 		log.Println(red(err))
@@ -145,5 +145,5 @@ func migrateProfile() {
 		log.Println(err)
 	}
 
-	fmt.Printf("Profile for email: %s was updated\n", *emailProfileFlag)
+	fmt.Printf("Profile for email: %s was updated\n", *profileEmailFlag)
 }
