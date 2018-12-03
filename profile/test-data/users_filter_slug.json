@@ -1,0 +1,54 @@
+{
+  "data": [
+      {
+          "type": "user",
+          "id": 15,
+          "attributes": {
+              "id": 15,
+              "birthdate": null,
+              "photo": "https://scontent.xx.fbcdn.net/v/t1.0-1/p50x50/17353348_1609601459069292_7390898730178998980_n.jpg?oh=4baeea914c1a636707d9ee3551911d73&oe=59752B8E",
+              "location": null,
+              "phone": null,
+              "status": "active",
+              "greeting": null,
+              "realm": "CURATOR",
+              "username": "Carolina Romero",
+              "password": "$2a$10$Lif8UA7SNCyD5NZydQT3A.OnsOdvlpIt6WuQHylgH9XzBCcxZ0O3C",
+              "email": "romerodenova@outlook.es",
+              "emailVerified": 1,
+              "verificationToken": null,
+              "position": "Articulista",
+              "description": null,
+              "twitter": null,
+              "facebook": "https://www.facebook.com/carolinaromerocc/",
+              "slug": "carolina-romero",
+              "type": null
+          }
+      },
+      {
+          "type": "user",
+          "id": 149,
+          "attributes": {
+              "id": 149,
+              "birthdate": null,
+              "photo": null,
+              "location": null,
+              "phone": null,
+              "status": "active",
+              "greeting": null,
+              "realm": "Carolina Romero",
+              "username": "Carolina Romero",
+              "password": "1233",
+              "email": "carolina.romero@culturacolectiva.com",
+              "emailVerified": 1,
+              "verificationToken": null,
+              "position": null,
+              "description": null,
+              "twitter": null,
+              "facebook": null,
+              "slug": "carolina-romero",
+              "type": null
+          }
+      }
+  ]
+}
