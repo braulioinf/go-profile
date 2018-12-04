@@ -19,17 +19,21 @@ const (
 	urlPrefix         = "https://"
 	urlSuffix         = ".culturacolectiva.com/"
 	urlProfilesSuffix = "profiles"
+	email             = "email"
+	slug              = "slug"
 )
 
 var (
 	userEmailFlag    *string
 	profileEmailFlag *string
+	userSlugFlag     *string
 	tokenFlag        *string
 	environmentFlag  *string
 	dataUserFlag     *string
 	api              string
 	green            = color.New(color.FgGreen).SprintFunc()
 	red              = color.New(color.FgRed).SprintFunc()
+	selectedUser     int
 )
 
 func main() {
@@ -38,6 +42,7 @@ func main() {
 	tokenFlag = flag.String("token", "", "Token needed to make the petition")
 	environmentFlag = flag.String("environment", "dev", "Environment to make metition {dev, staging, prod}")
 	dataUserFlag = flag.String("data-users", "http://localhost:3000", "URL for get users")
+	userSlugFlag = flag.String("user-slug", "", "Slug user to get source info")
 
 	envs := map[string]string{
 		"dev":     "dev.api",
@@ -57,12 +62,23 @@ func main() {
 // MigrateProfile func
 func migrateProfile() {
 	profileURL := urlPrefix + api + urlSuffix + urlProfilesSuffix
+	userKey := 0
 
 	fmt.Printf("Working profile in %s\n", green(profileURL))
 	fmt.Printf("Working user in %s\n", green(*dataUserFlag))
 
+	content := *userEmailFlag
+	field := email
+
+	if len(*userSlugFlag) > 0 {
+		content = *userSlugFlag
+		field = slug
+	}
+
+	fmt.Printf("Searching user by %s\n", green(field))
+
 	userAttrs := make([]profile.Param, 0)
-	userAttrs = append(userAttrs, profile.Param{Field: "email", Content: *userEmailFlag})
+	userAttrs = append(userAttrs, profile.Param{Field: field, Content: content})
 
 	userOps := profile.Options{
 		Endpoint: *dataUserFlag + "/users",
@@ -70,7 +86,7 @@ func migrateProfile() {
 		Method:   "GET",
 	}
 
-	fmt.Printf("Searching in user: %s\n", green(*userEmailFlag))
+	fmt.Printf("Searching in user: %s\n", green(content))
 	userData, err := profile.GetUsers(userOps)
 	if err != nil {
 		log.Println(red(err))
@@ -101,8 +117,23 @@ func migrateProfile() {
 		os.Exit(0)
 	}
 
+	if len(userData.Data) > 1 {
+		fmt.Printf("%s items found\n\n", green(len(userData.Data)))
+
+		for k, v := range userData.Data {
+			fmt.Printf("%s) slug: %s with email: %s\n", green(k+1), green(v.Attributes.Slug), green(v.Attributes.Email))
+		}
+
+		_, err := fmt.Scanf("%d", &selectedUser)
+		if err != nil {
+			fmt.Printf("%s\n", err)
+		}
+
+		userKey = selectedUser - 1
+	}
+
 	// Available fields to set
-	responseAttrs := structs.Map(userData.Data[0].Attributes)
+	responseAttrs := structs.Map(userData.Data[userKey].Attributes)
 	available := []string{"Username", "Birthday", "Slug", "Position", "Description", "Facebook", "Twitter"}
 
 	patchAttrs := make(map[string]interface{})
