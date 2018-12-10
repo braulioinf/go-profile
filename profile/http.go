@@ -50,5 +50,13 @@ func makePetition(ops Options) (interface{}, error) {
 		return nil, err
 	}
 
+	if res.StatusCode >= 500 {
+		return nil, ErrorInternalServer(response)
+	}
+
+	if res.StatusCode >= 400 {
+		return nil, ErrorUnauthorized(response)
+	}
+
 	return response, nil
 }

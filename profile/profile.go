@@ -48,3 +48,31 @@ func SetProfile(o Options) (interface{}, error) {
 
 	return data, nil
 }
+
+// GetArticles func
+func GetArticles(o Options) (*Article, error) {
+	data, err := makePetition(o)
+
+	if err != nil {
+		return &Article{}, err
+	}
+
+	articles := new(Article)
+
+	if err := mapstructure.Decode(data, &articles); err != nil {
+		return &Article{}, err
+	}
+
+	return articles, nil
+}
+
+// SetArticle func
+func SetArticle(o Options) (interface{}, error) {
+	data, err := makePetition(o)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return data, nil
+}
