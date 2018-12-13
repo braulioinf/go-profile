@@ -1,18 +1,12 @@
 package main
 
 import (
-	"encoding/json"
 	"flag"
 	"fmt"
-	"log"
 	"os"
-	"strings"
 
 	"github.com/Cultura-Colectiva-Tech/go-profile/profile"
-
 	"github.com/fatih/color"
-	"github.com/fatih/structs"
-	"github.com/mitchellh/mapstructure"
 )
 
 const (
@@ -21,6 +15,7 @@ const (
 	urlProfilesSuffix = "profiles"
 	email             = "email"
 	slug              = "slug"
+	urlArticlesSuffix = "articles"
 )
 
 var (
@@ -33,16 +28,32 @@ var (
 	api              string
 	green            = color.New(color.FgGreen).SprintFunc()
 	red              = color.New(color.FgRed).SprintFunc()
+	blue             = color.New(color.FgHiBlue).SprintFunc()
 	selectedUser     int
+	taskFlag         *string
+	limitFlag        *string
+	pageFlag         *string
+	typePostFlag     *string
+	startDateFlag    *string
+	endDateFlag      *string
+	statusPostFlag   *string
 )
 
 func main() {
-	userEmailFlag = flag.String("user-email", "", "Email user to get source info")
-	profileEmailFlag = flag.String("profile-email", "", "Email profile to push info")
 	tokenFlag = flag.String("token", "", "Token needed to make the petition")
 	environmentFlag = flag.String("environment", "dev", "Environment to make metition {dev, staging, prod}")
 	dataUserFlag = flag.String("data-users", "http://localhost:3000", "URL for get users")
+	userEmailFlag = flag.String("user-email", "", "Email user to get source info")
 	userSlugFlag = flag.String("user-slug", "", "Slug user to get source info")
+	profileEmailFlag = flag.String("profile-email", "", "Email profile to push info")
+	taskFlag = flag.String("task", "profiles", "Task name to action, {profiles, articles}")
+	// Migrate
+	limitFlag = flag.String("limit", "50", "Limit of items in the response")
+	pageFlag = flag.String("page", "1", "Number of the page where start")
+	typePostFlag = flag.String("type-post", "POST", "Article type to be searched {VIDEO,POST}. Default: video")
+	startDateFlag = flag.String("start-date", "2018-01-01", "Year to bring Article, Default: 2018-01-01")
+	endDateFlag = flag.String("end-date", "2018-12-31", "Month to bring Articles. Default: 2018-12-31")
+	statusPostFlag = flag.String("status-post", "STATUS_PUBLISHED", "Article status to be searched. Default: published")
 
 	envs := map[string]string{
 		"dev":     "dev.api",
@@ -54,127 +65,19 @@ func main() {
 
 	api = envs[*environmentFlag]
 
-	if api != "" {
-		migrateProfile()
-	}
-}
+	options := []string{"profiles", "articles"}
 
-// MigrateProfile func
-func migrateProfile() {
-	profileURL := urlPrefix + api + urlSuffix + urlProfilesSuffix
-	userKey := 0
-
-	fmt.Printf("Working profile in %s\n", green(profileURL))
-	fmt.Printf("Working user in %s\n", green(*dataUserFlag))
-
-	content := *userEmailFlag
-	field := email
-
-	if len(*userSlugFlag) > 0 {
-		content = *userSlugFlag
-		field = slug
-	}
-
-	fmt.Printf("Searching user by %s\n", green(field))
-
-	userAttrs := make([]profile.Param, 0)
-	userAttrs = append(userAttrs, profile.Param{Field: field, Content: content})
-
-	userOps := profile.Options{
-		Endpoint: *dataUserFlag + "/users",
-		Params:   userAttrs,
-		Method:   "GET",
-	}
-
-	fmt.Printf("Searching in user: %s\n", green(content))
-	userData, err := profile.GetUsers(userOps)
-	if err != nil {
-		log.Println(red(err))
-	}
-
-	// Prepare to search Profile
-	profileAttrs := make([]profile.Param, 0)
-	profileAttrs = append(profileAttrs, profile.Param{Field: "filter.email", Content: *profileEmailFlag})
-	profileAttrs = append(profileAttrs, profile.Param{Field: "page", Content: "1"})
-	profileAttrs = append(profileAttrs, profile.Param{Field: "limit", Content: "1"})
-	profileAttrs = append(profileAttrs, profile.Param{Field: "sortBy", Content: "DESC"})
-
-	profileOps := profile.Options{
-		Endpoint: profileURL,
-		Params:   profileAttrs,
-		Method:   "GET",
-		Token:    *tokenFlag,
-	}
-
-	fmt.Printf("Searching in profile: %s\n", green(*profileEmailFlag))
-	profileData, err := profile.GetProfiles(profileOps)
-	if err != nil {
-		log.Println(red(err))
-	}
-
-	if len(userData.Data) == 0 || len(profileData.Data) == 0 {
-		log.Println("User or Profile is empty")
+	if !profile.Contains(options, *taskFlag) {
+		fmt.Println("Task not valid")
 		os.Exit(0)
 	}
 
-	if len(userData.Data) > 1 {
-		fmt.Printf("%s items found\n\n", green(len(userData.Data)))
-
-		for k, v := range userData.Data {
-			fmt.Printf("%s) slug: %s with email: %s\n", green(k+1), green(v.Attributes.Slug), green(v.Attributes.Email))
-		}
-
-		_, err := fmt.Scanf("%d", &selectedUser)
-		if err != nil {
-			fmt.Printf("%s\n", err)
-		}
-
-		userKey = selectedUser - 1
+	if *taskFlag == urlProfilesSuffix {
+		taskMigrateProfile()
+		os.Exit(0)
 	}
 
-	// Available fields to set
-	responseAttrs := structs.Map(userData.Data[userKey].Attributes)
-	available := []string{"Username", "Birthday", "Slug", "Position", "Description", "Facebook", "Twitter"}
-
-	patchAttrs := make(map[string]interface{})
-	for field, content := range responseAttrs {
-		if profile.Contains(available, field) {
-			patchAttrs[strings.ToLower(field)] = content
-			fmt.Printf("Building body to patch: [%s] = %s\n", green(strings.ToLower(field)), content)
-		}
+	if *taskFlag == urlArticlesSuffix {
+		taskFillMetadata()
 	}
-
-	profileID := profileData.Data[0].ID
-	data := profile.Body{
-		Data: profile.BodyAttributes{
-			Type:       "profiles",
-			ID:         profileID,
-			Attributes: patchAttrs,
-		},
-	}
-
-	bodyProfile, err := json.Marshal(data)
-	if err != nil {
-		log.Println(err)
-	}
-
-	patchOps := profile.Options{
-		Endpoint: profileURL + "/" + profileID,
-		Token:    *tokenFlag,
-		Method:   "PATCH",
-		Body:     bodyProfile,
-	}
-
-	response, err := profile.SetProfile(patchOps)
-	if err != nil {
-		log.Println(red(err))
-	}
-
-	profileResponse := new(profile.ProfileData)
-
-	if err := mapstructure.Decode(response, &profileResponse); err != nil {
-		log.Println(err)
-	}
-
-	fmt.Printf("Profile for email: %s was updated\n", *profileEmailFlag)
 }
