@@ -37,6 +37,8 @@ var (
 	startDateFlag    *string
 	endDateFlag      *string
 	statusPostFlag   *string
+	authorSlugFlag   *string
+	authorIDFlag     *string
 )
 
 func main() {
@@ -54,6 +56,10 @@ func main() {
 	startDateFlag = flag.String("start-date", "2018-01-01", "Year to bring Article, Default: 2018-01-01")
 	endDateFlag = flag.String("end-date", "2018-12-31", "Month to bring Articles. Default: 2018-12-31")
 	statusPostFlag = flag.String("status-post", "STATUS_PUBLISHED", "Article status to be searched. Default: published")
+
+	// Special filters
+	authorSlugFlag = flag.String("author-slug", "", "Author's Slug (slug from profile)")
+	authorIDFlag = flag.String("author-id", "", "Author's ID (providerId from profile)")
 
 	envs := map[string]string{
 		"dev":     "dev.api",
@@ -78,6 +84,12 @@ func main() {
 	}
 
 	if *taskFlag == urlArticlesSuffix {
+
+		if *authorSlugFlag != "" && *authorIDFlag != "" {
+			fmt.Printf("Can't use same time 'author-slug' and 'author-id' params.")
+			os.Exit(0)
+		}
+
 		taskFillMetadata()
 	}
 }

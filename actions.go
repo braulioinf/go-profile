@@ -79,6 +79,14 @@ func fillParams(page string) ([]profile.Param, error) {
 	params = append(params, profile.Param{Field: "limit", Content: *limitFlag})
 	params = append(params, profile.Param{Field: "sortBy", Content: "DESC"})
 
+	if len(*authorSlugFlag) > 0 {
+		params = append(params, profile.Param{Field: "filter.authorSlug", Content: *authorSlugFlag})
+	}
+
+	if len(*authorIDFlag) > 0 {
+		params = append(params, profile.Param{Field: "filter.authorId", Content: *authorIDFlag})
+	}
+
 	return params, nil
 }
 
