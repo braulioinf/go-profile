@@ -8,8 +8,8 @@ import (
 	"github.com/google/go-cmp/cmp"
 )
 
-// TestGetProfileSecondPage --- Profiles
-func TestGetProfileSecondPage(t *testing.T) {
+// TestGetProfileThirdPage --- Profiles
+func TestGetProfileThirdPage(t *testing.T) {
 
 	if *tokenFlag == "" {
 		t.Log("Token is required")
@@ -18,7 +18,7 @@ func TestGetProfileSecondPage(t *testing.T) {
 
 	// Prepare filter
 	profileAttrs := make([]Param, 0)
-	profileAttrs = append(profileAttrs, Param{Field: "page", Content: "2"})
+	profileAttrs = append(profileAttrs, Param{Field: "page", Content: "3"})
 	profileAttrs = append(profileAttrs, Param{Field: "limit", Content: "10"})
 	profileAttrs = append(profileAttrs, Param{Field: "sortBy", Content: "DESC"})
 
@@ -34,7 +34,7 @@ func TestGetProfileSecondPage(t *testing.T) {
 		t.Error(err)
 	}
 
-	data, err := ReadFile("test-data/profiles_second_page_limit_10.json")
+	data, err := ReadFile("test-data/profiles_third_page_limit_10.json")
 
 	if err != nil {
 		t.Error(err)
@@ -47,7 +47,7 @@ func TestGetProfileSecondPage(t *testing.T) {
 	comparation := cmp.Equal(result, response)
 
 	if !comparation {
-		t.Error("Response from GetProfileFirstPage was:")
+		t.Error("Response from GetProfileThirdPage was:")
 		t.Error(response)
 		t.Error("The data against is being run this test is:")
 		t.Error(result)
