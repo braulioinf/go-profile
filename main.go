@@ -53,8 +53,8 @@ func main() {
 	limitFlag = flag.String("limit", "50", "Limit of items in the response")
 	pageFlag = flag.String("page", "1", "Number of the page where start")
 	typePostFlag = flag.String("type-post", "POST", "Article type to be searched {VIDEO,POST}. Default: video")
-	startDateFlag = flag.String("start-date", "2018-01-01", "Year to bring Article, Default: 2018-01-01")
-	endDateFlag = flag.String("end-date", "2018-12-31", "Month to bring Articles. Default: 2018-12-31")
+	startDateFlag = flag.String("start-date", "2018-01-01", "Date to bring Article, Default: 2018-01-01")
+	endDateFlag = flag.String("end-date", "2018-12-31", "Date to bring Articles. Default: 2018-12-31")
 	statusPostFlag = flag.String("status-post", "STATUS_PUBLISHED", "Article status to be searched. Default: published")
 
 	// Special filters

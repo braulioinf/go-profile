@@ -53,16 +53,48 @@ db.profiles.updateMany({email: '<email>'}, {$set: {status: 'STATUS_ACTIVE', role
 
 ## Basic usage
 
+Generate execute
 ```sh
-  go run main.go --user-email ${email} --profile-email ${email} --token ${token}
+go build
 ```
 
+Run `profiles` task
+
+* Search by email
+```sh
+./go-ptofile --task profiles --user-email ${email} --profile-email ${email} --token ${token}
+```
+* Search by slug
+```sh
+./go-ptofile --task profiles --user-slug ${email} --profile-email ${email} --token ${token}
+```
+
+Run `articles` task and filter by authorId
+
+```sh
+./go-ptofile --task articles --start-date ${start} --end-date ${end} --author-id ${hash} --token ${token}
+```
+
+Run `articles` task and filter by authorSlug
+
+```sh
+./go-ptofile --task articles --start-date ${start} --end-date ${end} --author-slug ${slug} --token ${token}
+```
 ## Flags
 
 | Flag            | Type   | Description                                            |
 |-----------------|--------|--------------------------------------------------------|
-|`--token`        | string |Token to make petitions get from CMS                    |
-|`--user-email`   | string |User email from last database (CMS)                     |
-|`--profile-email` | string |Profile email from new database (CMS)                    |
-|`--environment`  | string |Environment to make petitions {dev,staging, prod}       |
-|`--data-users`   | string |URL for get users                                       |
+|`--token`        | string | Token to make petitions get from CMS                   |
+|`--user-email`   | string | User email from last database (CMS)                    |
+|`--user-slug`    | string | User slug from last database (CMS)                     |
+|`--profile-email` | string | Profile email from new database (CMS)                   |
+|`--environment`  | string | Environment to make petitions {dev,staging, prod}      |
+|`--data-users`   | string | URL for get users                                      |
+|`--limit`        | string | Limit paginate, Default: 50                            |
+|`--page`         | string | Page paginate, Default: Default: 1                     |
+|`--type-post`    | string | Article type to search, Default: POST                  |
+|`--status-post`  | string | Article status to search, Default: STATUS_PUBLISHED    |
+|`--start-date`   | string | StartDate to filter article, Default: 2018-01-01        |
+|`--end-date`     | string | EndDate to filter article, Default: 2018-12-31          |
+|`--author-slug`  | string | Search articles by author slug                         |
+|`--author-id`    | string | Search articles by author id                           |
