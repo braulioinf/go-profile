@@ -1,0 +1,25 @@
+{
+  "metadata": {
+      "paginate": {
+          "totalCount": 99,
+          "pageCount": 99,
+          "page": 1,
+          "limit": 1,
+          "sortBy": "DESC"
+      }
+  },
+  "data": [
+      {
+          "type": "profiles",
+          "id": "rzc1cwBzukdlW5zphMPo2tckdXL2",
+          "attributes": {
+              "providerId": "rzc1cwBzukdlW5zphMPo2tckdXL2",
+              "name": "Elizabeth Flores",
+              "email": "elizabeth.flores@culturacolectiva.com",
+              "status": "STATUS_ACTIVE",
+              "role": "ROLE_EDITOR",
+              "picture": "https://graph.facebook.com/142420580066891/picture"
+          }
+      }
+  ]
+}

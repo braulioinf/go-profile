@@ -1,0 +1,11 @@
+{
+  "type": "profiles",
+  "id": "g0CX4kvuTxOuMGiYsrHyLt2cJzm2",
+  "attributes": {
+      "name": "Abril Romero",
+      "email": "abygromero@gmail.com",
+      "status": "STATUS_ACTIVE",
+      "role": "ROLE_EDITOR",
+      "picture": "https://graph.facebook.com/2385936324753423/picture"
+  }
+}
