@@ -110,6 +110,7 @@ func searchProfileFromArticle(articles []profile.ArticleData, genre string) (map
 	profileURL := urlPrefix + api + urlSuffix + urlProfilesSuffix
 
 	response := make(map[string]interface{}, 0)
+	cache := make(map[string]interface{}, 0)
 
 	content := ""
 
@@ -123,6 +124,13 @@ func searchProfileFromArticle(articles []profile.ArticleData, genre string) (map
 		}
 
 		fmt.Printf("%d._ Searching in article ID: %s with %s = %s ", d+1, blue(string(article.ID)), blue(genre), blue(content))
+
+		_, cached := cache[content]
+		if cached {
+			fmt.Printf(".......... %s => Found profile ID from CACHE.\n", green(genre))
+			response[article.ID] = cache[content]
+			continue
+		}
 
 		// Prepare to search Profile
 		param := make([]profile.Param, 0)
@@ -144,13 +152,16 @@ func searchProfileFromArticle(articles []profile.ArticleData, genre string) (map
 			continue
 		}
 
-		// Exist profile
+		// Don't exist profile
 		if len(profileResponse.Data) == 0 {
 			fmt.Println(red("......... profile don't exist"))
 			continue
 		}
 
 		pro := profileResponse.Data[0]
+
+		// temp
+		cache[content] = pro.Attributes
 
 		fmt.Printf(".......... %s => Found profile ID: %s. \n", green(genre), green(pro.ID))
 
